@@ -22,3 +22,8 @@ No code can be written before April 21st, 2017 at 12:00 MST. However brainstormi
 ## Bug Fixing and Tidying
 
 Any features that we are working on or plan to work on will be posted on our Trello board [here](https://trello.com/b/Qnq9w4PC).
+
+## Contributors
+
+Kyle Helmick
+Morgan Burrows
