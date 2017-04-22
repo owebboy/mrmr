@@ -5,10 +5,11 @@ var express = require( 'express' ),
   cookieParser = require( 'cookie-parser' ),
   bodyParser = require( 'body-parser' ),
   index = require( './routes/index' ),
+  uuid = require( 'uuid' ),
   app = express();
 
 // Integrate socket.io
-app.io = require( 'socket.io' );
+app.io = require( 'socket.io' )();
 
 // view engine setup
 app.set( 'views', path.join( __dirname, 'views' ));
@@ -52,8 +53,5 @@ app.use( function errorhandler( err, req, res, next ) {
 app.io.on( 'connection', function onconnect( socket ) {
   console.log( 'A user connected!' );
 });
-
-
-
 
 module.exports = app;
