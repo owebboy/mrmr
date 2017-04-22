@@ -1,25 +1,20 @@
 <nav class="navbar navbar-default" style="display: flex" >
-    <div class="container-fluid" style="align-items: stretch">
-        <div class="navbar-header" style="align-items: stretch">
-            <img src='images/mrmr_logo.svg' alt="mrmr" style="align-items: stretch">
-
-        </div>
+    <div class="container-fluid navbar-header" style="margin: 0px" >
+        <!--<img src='images/mrmr_logo.svg' alt="mrmr" style="height: 100%; float: left; vertical-align: baseline">-->
+        <h1 style="color: #ddd"><small>Welcome to {{title}}</small></h1>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"> 
+                    Dropdown <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>Change Your Name</li>
+                    <li>Change the Color Scheme</li>
+                <ul>
+            </li>
+        </ul>
     </div>
 </nav>
-    
-    <h1 style="color: #ddd"><small>Welcome to {{title}}</small></h1>
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="float: right;"> 
-                Dropdown <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li>Change Your Name</li>
-                <li>Change the Color Scheme</li>
-            <ul>
-        </li>
-    </ul>
-</div>
 
 <div class='row' style="padding-bottom: 4em;">
     <div class='col-sm-12'>
