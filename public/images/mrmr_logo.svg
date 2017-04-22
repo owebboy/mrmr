@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="18.9875"
-     inkscape:cx="39.661046"
-     inkscape:cy="7.6750483"
+     inkscape:zoom="5.6903969"
+     inkscape:cx="35.997278"
+     inkscape:cy="15.736865"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="text4487"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,22 +55,22 @@
      transform="translate(-48.400006,-147.93494)">
     <g
        aria-label="mrmr"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Klavika;-inkscape-font-specification:Klavika;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Klavika;-inkscape-font-specification:Klavika;letter-spacing:0px;word-spacing:0px;fill:#5599ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="text4487">
       <path
-         style="stroke-width:0.26458332"
+         style="stroke-width:0.26458332;fill:#777777;fill-opacity:1"
          d="m 51.744141,147.93555 c -0.592666,0 -1.417735,0.18918 -2.052735,0.49609 l -0.158203,-0.39062 h -1.132812 v 5.15429 h 1.523437 v -3.4082 c 0.328083,-0.17992 0.836161,-0.37109 1.111328,-0.37109 0.264583,0 0.371094,0.13826 0.371094,0.37109 v 3.4082 h 1.523438 v -3.4082 c 0.328082,-0.17992 0.836161,-0.37109 1.111328,-0.37109 0.264583,0 0.371093,0.13826 0.371093,0.37109 v 3.4082 h 1.523438 v -3.60937 c 0,-0.99484 -0.30713,-1.65039 -1.185547,-1.65039 -0.709083,0 -1.48237,0.21034 -2.064453,0.49609 -0.179917,-0.3175 -0.486322,-0.49609 -0.941406,-0.49609 z"
          id="path4517" />
       <path
-         style="stroke-width:0.26458332"
+         style="stroke-width:0.26458332;fill:#5599ff;fill-opacity:1"
          d="m 60.029297,147.93555 c -0.41275,0.0847 -1.069219,0.39184 -1.386719,0.60351 l -0.105469,-0.49804 h -1.269531 v 5.15429 h 1.523438 v -3.14453 c 0.328083,-0.23283 0.910151,-0.49586 1.365234,-0.67578 z"
          id="path4515" />
       <path
-         style="stroke-width:0.26458332"
+         style="stroke-width:0.26458332;fill:#777777;fill-opacity:1"
          d="m 64.271484,147.93555 c -0.592667,0 -1.419687,0.18918 -2.054687,0.49609 l -0.158203,-0.39062 h -1.132813 v 5.15429 h 1.525391 v -3.4082 c 0.328084,-0.17992 0.836162,-0.37109 1.111328,-0.37109 0.264584,0 0.369141,0.13826 0.369141,0.37109 v 3.4082 h 1.523437 v -3.4082 c 0.328083,-0.17992 0.836161,-0.37109 1.111328,-0.37109 0.264583,0 0.371094,0.13826 0.371094,0.37109 v 3.4082 h 1.523438 v -3.60937 c 0,-0.99484 -0.305177,-1.65039 -1.183594,-1.65039 -0.709083,0 -1.482369,0.21034 -2.064453,0.49609 -0.179916,-0.3175 -0.486324,-0.49609 -0.941407,-0.49609 z"
          id="path4513" />
       <path
-         style="stroke-width:0.26458332"
+         style="stroke-width:0.26458332;fill:#5599ff;fill-opacity:1"
          d="m 72.556641,147.93555 c -0.41275,0.0847 -1.069219,0.39184 -1.386719,0.60351 l -0.105469,-0.49804 h -1.269531 v 5.15429 h 1.523437 v -3.14453 c 0.328083,-0.23283 0.910152,-0.49586 1.365235,-0.67578 z"
          id="path4503" />
     </g>
@@ -85,5 +85,5 @@
            height="158.20935"
            x="113.96972"
            y="356.12073" /></flowRegion><flowPara
-         id="flowPara4495"></flowPara></flowRoot>  </g>
+         id="flowPara4495" /></flowRoot>  </g>
 </svg>
