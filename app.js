@@ -9,7 +9,7 @@ var express = require( 'express' ),
   app = express(),
   userList = [],
   roomList = [],
-  animalList = [ 'TRex', 'Sloth', 'Llama', 'Dog', 'Cat', 'Waterbottle', 'Shovel', 'Door', 'Shirt', 'Potato' ],
+  animalList = [ 't-rex', 'sloth', 'llama', 'dog', 'cat', 'waterbottle', 'shovel', 'door', 'shirt', 'potato' ],
   colorList = [ 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white', 'grey', 'black' ],
   user = {};
 
@@ -72,7 +72,7 @@ app.io.on( 'connection', function onconnect( socket ) {
   //set the user id and then the sockets id to that
   user.id = uuid();
   user.roomId = roomList [ 0 ];
-  user.name = colorList[ Math.floor( Math.random() * 10 ) ] + '-' + animalList[ Math.floor( Math.random() * 10 ) ];
+  user.name = colorList[ Math.floor( Math.random() * 10 ) ] + '_' + animalList[ Math.floor( Math.random() * 10 ) ];
 
   console.log( 'A user connected with the id: ' + user.id +
                '\n                        name: ' + user.name +
