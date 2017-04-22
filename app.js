@@ -7,6 +7,9 @@ var express = require( 'express' ),
   index = require( './routes/index' ),
   app = express();
 
+// Integrate socket.io
+app.io = require( 'socket.io' );
+
 // view engine setup
 app.set( 'views', path.join( __dirname, 'views' ));
 app.set( 'view engine', 'hbs' );
@@ -45,5 +48,12 @@ app.use( function errorhandler( err, req, res, next ) {
   res.status( err.status || 500 );
   res.render( 'error' );
 });
+
+app.io.on( 'connection', function onconnect( socket ) {
+  console.log( 'A user connected!' );
+});
+
+
+
 
 module.exports = app;

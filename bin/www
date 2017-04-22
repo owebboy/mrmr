@@ -17,6 +17,9 @@ var app = require( '../app' ),
 // Store port in Express
 app.set( 'port', port );
 
+// Attach socket.io
+app.io.attach( server );
+
 // Listen on provided port
 server.listen( port );
 server.on( 'error', onError );
