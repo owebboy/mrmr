@@ -6,7 +6,12 @@ var express = require( 'express' ),
   bodyParser = require( 'body-parser' ),
   index = require( './routes/index' ),
   uuid = require( 'uuid' ),
-  app = express();
+  app = express(),
+  userList = [],
+  roomList = [],
+  animalList = [ 'TRex', 'Sloth', 'Llama', 'Dog', 'Cat', 'Waterbottle', 'Shovel', 'Door', 'Shirt', 'Potato' ],
+  colorList = [ 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white', 'grey', 'black' ],
+  user = {};
 
 // Integrate socket.io
 app.io = require( 'socket.io' )();
@@ -50,8 +55,30 @@ app.use( function errorhandler( err, req, res, next ) {
   res.render( 'error' );
 });
 
+user = {
+  id: '',
+  name: '',
+  message: '',
+  uiPref: 'default',
+  roomId: '',
+  ownsRoom: false };
+
+//push the default room
+roomList.push( uuid());
+
 app.io.on( 'connection', function onconnect( socket ) {
   console.log( 'A user connected!' );
+
+  //set the user id and then the sockets id to that
+  user.id = uuid();
+  user.roomId = roomList [ 0 ];
+  user.name = colorList[ Math.floor( Math.random() * 10 ) ] + '-' + animalList[ Math.floor( Math.random() * 10 ) ];
+
+  console.log( 'A user connected with the id: ' + user.id +
+               '\n                        name: ' + user.name +
+               '\n                     room id: ' + user.roomId );
+
+  userList.push( user );
 });
 
 module.exports = app;
