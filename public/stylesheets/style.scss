@@ -65,10 +65,28 @@ body {
 }
 
 .input {
-  background-color: red;
+  background-color: #303030;
   width: 100%;
   -webkit-align-self: flex-end;
   align-self: flex-end;
   order: 4;
   height: 8%;
+}
+
+.text-bar{
+  height: 2em;
+  margin: .5%;
+  width: 82%;
+  text-align: left;
+}
+
+.submit-button{
+  padding: 0px;
+  height: 2em;
+  margin: .5%;
+  width: 15%;
+}
+
+.submit-button:hover{
+  background-color: blue;
 }
