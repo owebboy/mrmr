@@ -11,7 +11,10 @@ var express = require( 'express' ),
   roomList = [],
   animalList = [ 't-rex', 'sloth', 'llama', 'dog', 'cat', 'waterbottle', 'shovel', 'door', 'shirt', 'potato' ],
   colorList = [ 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white', 'grey', 'black' ],
-  user = {};
+  user = {},
+  i,
+  ret,
+  room = {};
 
 // Integrate socket.io
 app.io = require( 'socket.io' )();
@@ -63,16 +66,26 @@ user = {
   roomId: '',
   ownsRoom: false };
 
+room = {
+  id: '',
+  name: '',
+  users: []
+}
+
+room.id = ( uuid());
+room.name = 'Lobby';
+roomList.push( room );
 //push the default room
-roomList.push( uuid());
 
 app.io.on( 'connection', function onconnect( socket ) {
   console.log( 'A user connected!' );
 
   //set the user id and then the sockets id to that
   user.id = uuid();
-  user.roomId = roomList [ 0 ];
+  socket.uid = user.id;
+  user.roomId = roomList [ 0 ].id;
   user.name = colorList[ Math.floor( Math.random() * 10 ) ] + '_' + animalList[ Math.floor( Math.random() * 10 ) ];
+  roomList [ 0 ].users.push( user.name );
 
   console.log( 'A user connected with the id: ' + user.id +
                '\n                        name: ' + user.name +
@@ -80,7 +93,23 @@ app.io.on( 'connection', function onconnect( socket ) {
 
   userList.push( user );
 
-  
+  socket.on( 'request-user', function ru() {
+    for ( i = 0; i < userList.length; i++ ) {
+      if ( userList[ i ].id == socket.uid ) {
+        ret = userList[ i ];
+        break;
+      }
+    }
+    socket.emit( 'send-user', ret );
+  });
+
+  socket.on( 'request-rooms', function rr() {
+    socket.emit( 'send-rooms', roomList );
+  });
+
+  socket.on( 'client-to-room', function c2r( user ) {
+    app.io.to( user.roomId ).emit( 'room-to-clients', user );
+  });
 });
 
 module.exports = app;
