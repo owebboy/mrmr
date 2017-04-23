@@ -12,7 +12,8 @@ socket.on( 'send-user', function receiveUser( res ) {
 
 socket.on( 'send-rooms', function receiveRooms( res ) {
   console.log( res );
-  document.getElementById( 'room-insert' )
+  $( '#room-insert' ).empty();
+
   for ( i = 0; i < res.length; i++ ) {
     $( '#room-insert' ).append( $( '<div>' ).attr( 'id', res [ i ].name ));
     $( '#' + res [ i ].name ).append( $( '<p>' ).text( res [ i ].name ));
@@ -21,11 +22,4 @@ socket.on( 'send-rooms', function receiveRooms( res ) {
       $( '#' + res [ i ].name + 'list' ).append( $( '<li>' ).text( res [ i ].users[ j ]));
     }
   }
-});
-
-$( document ).ready( function onload() {
-
-  $( '#submit-button' ).click( function submit() {
-    console.log( 'works' );
-  });
 });

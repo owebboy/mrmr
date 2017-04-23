@@ -58,13 +58,17 @@ app.use( function errorhandler( err, req, res, next ) {
   res.render( 'error' );
 });
 
-user = {
-  id: '',
-  name: '',
-  message: '',
-  uiPref: 'default',
-  roomId: '',
-  ownsRoom: false };
+function listUsers() {
+  for ( i = 0; i < userList.length; i++ ) {
+    console.log( userList[ i ].name );
+  }
+}
+
+
+
+
+
+
 
 room = {
   id: '',
@@ -78,6 +82,15 @@ roomList.push( room );
 //push the default room
 
 app.io.on( 'connection', function onconnect( socket ) {
+
+  user = {
+    id: '',
+    name: '',
+    message: '',
+    uiPref: 'default',
+    roomId: '',
+    ownsRoom: false };
+
   console.log( 'A user connected!' );
 
   //set the user id and then the sockets id to that
@@ -93,6 +106,8 @@ app.io.on( 'connection', function onconnect( socket ) {
 
   userList.push( user );
 
+  listUsers();
+
   socket.on( 'request-user', function ru() {
     for ( i = 0; i < userList.length; i++ ) {
       if ( userList[ i ].id == socket.uid ) {
@@ -104,11 +119,29 @@ app.io.on( 'connection', function onconnect( socket ) {
   });
 
   socket.on( 'request-rooms', function rr() {
-    socket.emit( 'send-rooms', roomList );
+    app.io.emit( 'send-rooms', roomList );
   });
 
   socket.on( 'client-to-room', function c2r( user ) {
     app.io.to( user.roomId ).emit( 'room-to-clients', user );
+  });
+
+  socket.on( 'disconnect', function disc() {
+    for ( i = 0; i < userList.length; i++ ) {
+      if ( userList [ i ].id === socket.uid ) {
+        for ( j = 0; j < roomList.length; j++ ) {
+          for ( k = 0; k < roomList [ j ].users.length; k++ ) {
+            if ( userList [ i ].name === roomList [ j ].users[ k ]) {
+              console.log( 'disconnected user' );
+              roomList[ j ].users.splice( k, 1 );
+              userList.splice( i, 1 );
+              app.io.emit( 'send-rooms', roomList );
+              return;
+            }
+          }
+        }
+      }
+    }
   });
 });
 
