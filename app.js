@@ -140,7 +140,7 @@ app.io.on( 'connection', function onconnect( socket ) {
           for ( k = 0; k < roomList [ j ].users.length; k++ ) {
             if ( userList [ i ].name === roomList [ j ].users[ k ]) {
               serv.message = userList [ i ].name + ' has left the server.';
-              app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', user );
+              app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', serv );
 
               roomList[ j ].users.splice( k, 1 );
               userList.splice( i, 1 );
