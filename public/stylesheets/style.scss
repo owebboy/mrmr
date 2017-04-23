@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #111;
+  background-color: #000;
 }
 
 .wrapper {
@@ -27,12 +27,13 @@ body {
 .bg-image {
   z-index: -1;
   position: absolute;
-  opacity: .3;
-  margin-top: 4vh;
+  opacity: .4;
+  margin-top: 8vh;
   height: 84vh;
 }
 
 .topbar {
+  background-color: #151515;
   display: flex;
   width: 100%;
   order: 1;
@@ -44,6 +45,7 @@ body {
 
 .image {
   height: 100%;
+  margin-left: .5%;
 }
 
 .sidebar {
@@ -96,4 +98,15 @@ body {
 
 .submit-button:hover{
   background-color: blue;
+}
+
+.pane{
+  height:94%;
+  background-color: rgba(10,10,10,.2);
+  z-index: 0;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+  opacity: .9;
 }
