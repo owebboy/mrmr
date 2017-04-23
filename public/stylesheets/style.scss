@@ -59,11 +59,13 @@ body {
 
 .chat {
   background-color: rgba(0,0,0,0);
+  color: white;
   width: 85%;
   -webkit-align-self: stretch;
   align-self: stretch;
   order: 3;
   height: 85%;
+  overflow: auto;
 }
 
 .input {
