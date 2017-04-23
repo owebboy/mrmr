@@ -5,6 +5,10 @@
 body {
   background-color: #000; }
 
+p {
+  line-height: 90%;
+  font-size: .9em; }
+
 .wrapper {
   display: -webkit-box;
   display: -moz-box;
@@ -99,7 +103,7 @@ body {
   justify-content: center; }
 
 .roomowner {
-  right: 11%; }
+  right: 17%; }
 
 .posit {
   display: none;
@@ -116,5 +120,8 @@ body {
 
 .fa:hover {
   color: red; }
+
+.side-btn {
+  float: right; }
 
 /*# sourceMappingURL=style.css.map */

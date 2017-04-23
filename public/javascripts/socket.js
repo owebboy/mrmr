@@ -34,9 +34,11 @@ socket.on( 'send-rooms', function receiveRooms( res ) {
   var div2 = $( '<div>', { 'class': 'card-header', 'role': 'tab', 'id': 'H' + res [ 0 ].name });
   var h5 = $( '<h5>', { 'class': 'mb-0' });
   var a = $( '<a>', { 'data-toggle': 'collapse', 'data-parent': '#accordion', 'href': '#C' + res [ 0 ].name, 'aria-expanded': 'true', 'aria-controls': 'C' + res [ 0 ].name }).text( res [ 0 ].name );
+  var join = $( '<button>', { 'class': "btn side-btn", 'onclick': 'changeRoom( "' + res [ 0 ].name + '" )' }).text( 'Join' );
 
   h5 = h5.append( a );
   div2 = div2.append( h5 );
+  div2 = div2.append( join );
 
   var div3 = $( '<div>', { 'id': 'C' + res [ 0 ].name, 'class': 'collapse show', 'role': 'tabpanel', 'aria-labelledby': 'H' + res [ 0 ].name });
   var div4 = $( '<div>', { 'class': 'card-block' });
@@ -59,9 +61,11 @@ socket.on( 'send-rooms', function receiveRooms( res ) {
     var div2 = $( '<div>', { 'class': 'card-header', 'role': 'tab', 'id': 'H' + res [ i ].name });
     var h5 = $( '<h5>', { 'class': 'mb-0' });
     var a = $( '<a>', { 'class': 'collapsed', 'data-toggle': 'collapse', 'data-parent': '#accordion', 'href': '#C' + res [ i ].name, 'aria-expanded': 'false', 'aria-controls': 'C' + res [ i ].name }).text( res [ i ].name );
+    var join = $( '<button>', { 'class': "btn side-btn", 'onclick': 'changeRoom( "' + res [ i ].name + '" )' }).text( 'Join' );
 
     h5 = h5.append( a );
     div2 = div2.append( h5 );
+    div2 = div2.append( join );
 
     var div3 = $( '<div>', { 'id': 'C' + res [ i ].name, 'class': 'collapse show', 'role': 'tabpanel', 'aria-labelledby': 'H' + res [ i ].name });
     var div4 = $( '<div>', { 'class': 'card-block' });
