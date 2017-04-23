@@ -14,6 +14,8 @@ body {
   display: -webkit-flex;
   display: flex;  
   
+  position: relative;
+
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   
@@ -22,11 +24,19 @@ body {
   height: 100vh;
 }
 
+.bg-image {
+  z-index: -1;
+  position: absolute;
+  opacity: .3;
+  margin-top: 4vh;
+  height: 84vh;
+}
+
 .topbar {
   display: flex;
   width: 100%;
   order: 1;
-  max-height: 8%;
+  height: 7%;
   .topbaritem {
     color: white;
   }
@@ -37,20 +47,21 @@ body {
 }
 
 .sidebar {
-  background-color: green;
-  flex: 2;
+  background-color: rgba(64,64,64,.6);
+  width: 15%;
   -webkit-align-self: stretch;
   align-self: stretch;
   order: 2;
+  height: 85%;
 }
 
 .chat {
-  background-color: yellow;
-  flex: 8;
+  background-color: rgba(0,0,0,0);
+  width: 85%;
   -webkit-align-self: stretch;
   align-self: stretch;
-  flex-direction: column;
   order: 3;
+  height: 85%;
 }
 
 .input {
@@ -59,4 +70,5 @@ body {
   -webkit-align-self: flex-end;
   align-self: flex-end;
   order: 4;
+  height: 8%;
 }
