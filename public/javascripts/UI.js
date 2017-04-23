@@ -1,3 +1,17 @@
+var count = 0
+title = document.title;
+var docBody = document.getElementById('site-body');
+docBody.onload = newUpdate;
+function changeTitle() {
+    count++;
+    var newTitle = '(' + count + ') ' + title;
+    document.title = newTitle;
+}
+
+function newUpdate() {
+    update = setInterval(changeTitle, 2000);
+}
+
 function sendMessage() {
   user.message = $( '#text-bar' ).val();
   if ( user.message === '' ) {
