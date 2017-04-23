@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default" style="display: flex" >
     <div class="container-fluid navbar-header" style="margin: 0px" >
-        <!--<img src='images/mrmr_logo.svg' alt="mrmr" style="height: 100%; float: left; vertical-align: baseline">-->
+        <img src='images/mrmr_logo.svg' alt="mrmr" style="height: 100%; float: left; vertical-align: baseline">
         <h1 style="color: #ddd"><small>Welcome to {{title}}</small></h1>
         <ul class="nav nav-tabs">
             <li role="presentation" class="dropdown">
@@ -23,7 +23,7 @@
 </div>
 
 <nav class='navbar navbar-fixed-bottom'>
-    <form action="">
+    <form onsubmit="return false">
         <input type="text" class="text-bar btn" placeholder="secret">
         <button type="submit" class="submit-button btn" onclick="sendFunction()">Send</button>
     </form>
