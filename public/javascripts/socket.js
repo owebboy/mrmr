@@ -1,30 +1,27 @@
 var socket = io(),
   user,
   i,
-  $div;
+  $div,
+  objdiv;
 
 socket.emit( 'request-user', null );
 socket.emit( 'request-rooms', null );
 
-function sendMessage() {
-  user.message = $( '#text-bar' ).val();
-  socket.emit( 'client-to-room', user );
-  document.getElementById( 'text-bar' ).value = '';
-}
-
 socket.on( 'room-to-clients', function roomtoclients( res ) {
-  console.log( res );
   $( '#chat-insert' ).append( $( '<li>' ).text( res.name + ': ' + res.message ));
 });
 
 socket.on( 'send-user', function receiveUser( res ) {
-  console.log( res );
   user = res;
+  console.log( user );
   document.getElementById( 'text-bar' ).placeholder = res.name;
+  $( '#ddOwner' ).hide();
+  if ( user.ownsRoom == true ) {
+    $( '#ddOwner' ).show();
+  }
 });
 
 socket.on( 'send-rooms', function receiveRooms( res ) {
-  console.log( res );
   $( '#room-insert' ).empty();
 
   for ( i = 0; i < res.length; i++ ) {

@@ -112,3 +112,29 @@ body {
   margin-right: 1.5%;
   opacity: .9;
 }
+
+.dflex {
+  position: absolute;
+  right: 5%;
+  top: 1.5vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.roomowner {
+  right: 20%;
+}
+
+.posit {
+  display: none;
+  z-index: 5;
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 60%;
+}
+
+.fa:hover {
+  color: red;
+}

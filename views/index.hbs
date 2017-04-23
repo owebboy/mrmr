@@ -1,7 +1,33 @@
 <div class="wrapper">
-<img src="images/pen.svg" alt="PEN" class="bg-image"></img>
+  <img src="images/pen.svg" alt="PEN" class="bg-image"></img>
   <header class="topbar">
+
     <img src="images/mrmr_logo.svg" alt="mrmr" class="image"></img>
+
+    <div class="roomowner dflex dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="ddOwner" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-cogs" aria-hidden="true"></i> Room Settings
+      </button>
+
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" onclick="changeRoomName()">Change Room Name</a>
+        <a class="dropdown-item" onclick="lockRoom()">Lock Room</a>
+        <a class="dropdown-item" onclick="changePassword()">Change Password</a>
+        <a class="dropdown-item disabled">Kick User</a>
+        <a class="dropdown-item " onclick="closeRoom()">Close Room</a>        
+      </div>
+    </div>
+
+    <div class="dflex dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="ddMember" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-cogs" aria-hidden="true"></i> Settings
+      </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" onclick="changeName()">Change Your Name</a>
+        <a class="dropdown-item disabled">Color Scheme</a>
+      </div>
+    </div>
+
   </header>
 
   <article class="chat" id="chat">
@@ -21,7 +47,14 @@
       <input id="text-bar" type="text" class="text-bar btn" id="new-message" placeholder="secret" autocomplete="off">
       <button id="submit-button" type="submit" class="submit-button btn" style="vertical-align: middle" onclick="sendMessage()">Send</button>
     </form>
-
   </footer>
 
+</div>
+
+<div class="card posit" id="popup">
+  <h3 class="card-header" id="popuptitle">Featured <a style="float: right" onclick="closePopup()"><i class="fa fa-times" aria-hidden="true"></i></a> </h3>
+  <div class="card-block">
+    <h4 class="card-title" id="popupheader">Special title treatment</h4>
+    <a href="#" class="btn btn-primary" id="popupbutton">Go somewhere</a>
+  </div>
 </div>
