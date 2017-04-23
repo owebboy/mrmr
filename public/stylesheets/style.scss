@@ -55,6 +55,13 @@ body {
   align-self: stretch;
   order: 2;
   height: 85%;
+  li {
+    color: white;
+    padding-left: 1.8em;
+  }
+  p {
+    color: white;
+  }
 }
 
 .chat {
