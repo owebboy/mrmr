@@ -113,9 +113,11 @@ app.io.on( 'connection', function onconnect( socket ) {
   listUsers();
 
   serv.message = user.name + ' has joined the room!';
+  console.log( '####room-to-clients####' );
   socket.broadcast.to( user.roomId ).emit( 'room-to-clients', serv );
 
   socket.on( 'request-user', function ru() {
+    console.log( '####request-user####' );
     for ( i = 0; i < userList.length; i++ ) {
       if ( userList[ i ].id == socket.uid ) {
         ret = userList[ i ];
@@ -126,14 +128,37 @@ app.io.on( 'connection', function onconnect( socket ) {
   });
 
   socket.on( 'request-rooms', function rr() {
+    console.log( '####request-rooms####' );
     app.io.emit( 'send-rooms', roomList );
   });
 
   socket.on( 'client-to-room', function c2r( user ) {
+    console.log( '####client-to-room####' );
     app.io.to( user.roomId ).emit( 'room-to-clients', user );
   });
 
+  socket.on( 'update-username', function uu( user ) {
+    console.log( '####update-username####' );
+    for ( i = 0; i < userList.length; i++ ) {
+      if ( user.id === userList [ i ].id ) {
+        for ( j = 0; j < roomList.length; j++ ) {
+          for ( k = 0; k < roomList [ j ].users.length; k++ ) {
+            if ( userList [ i ].name === roomList [ j ].users[ k ]) {
+              serv.message = userList [ i ].name + ' changed their name to ' + user.name;
+              socket.broadcast.to( user.roomId ).emit( 'room-to-clients', serv );
+              roomList [ j ].users [ k ] = user.name;
+              userList [ i ] = user;
+            }
+          }
+        }
+      }
+    }
+    socket.emit( 'send-user', user );
+    app.io.emit( 'send-rooms', roomList );
+  });
+
   socket.on( 'disconnect', function disc() {
+    console.log( '####disconnect####' );
     for ( i = 0; i < userList.length; i++ ) {
       if ( userList [ i ].id === socket.uid ) {
         for ( j = 0; j < roomList.length; j++ ) {

@@ -13,7 +13,7 @@ function changeName() {
   var title = 'Change Your Name';
   var header = 'What else are we gonna call you?';
   var button = 'Change it!';
-  var func = test;
+  var func = updateUsername;
 
   displayPopup( title, header, button, func );
 }
@@ -30,7 +30,13 @@ function closePopup() {
   $( '#popup' ).hide();
 }
 
-function test() {
-  console.log( 'wow!' );
+function updateUsername() {
+  var name = $( '#card-bar' ).val();
+  if ( name === '' ) {
+    return;
+  }
+  document.getElementById( 'card-bar' ).value = '';
+  user.name = name;
+  socket.emit( 'update-username', user );
   closePopup();
 }

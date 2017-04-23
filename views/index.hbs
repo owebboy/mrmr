@@ -31,10 +31,8 @@
   </header>
 
   <article class="chat" id="chat">
-    <div class="pane">
-      <ul id="chat-insert">
-      </ul>
-    </div>
+    <ul id="chat-insert">
+    </ul>
   </article>
 
   <aside class="sidebar" id="sidebar">
@@ -44,7 +42,7 @@
 
   <footer class="input">
     <form id="form" onsubmit="return false">
-      <input id="text-bar" type="text" class="text-bar btn" id="new-message" placeholder="secret" autocomplete="off">
+      <input id="text-bar" type="text" class="text-bar btn" placeholder="secret" autocomplete="off">
       <button id="submit-button" type="submit" class="submit-button btn" style="vertical-align: middle" onclick="sendMessage()">Send</button>
     </form>
   </footer>
@@ -55,6 +53,7 @@
   <h3 class="card-header" id="popuptitle">Featured <a style="float: right" onclick="closePopup()"><i class="fa fa-times" aria-hidden="true"></i></a> </h3>
   <div class="card-block">
     <h4 class="card-title" id="popupheader">Special title treatment</h4>
+    <input id="card-bar" type="text" class="card-bar btn" placeholder="Your name here" autocomplete="off">
     <a href="#" class="btn btn-primary" id="popupbutton">Go somewhere</a>
   </div>
 </div>
