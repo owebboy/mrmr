@@ -17,10 +17,11 @@
   </aside>
 
   <footer class="input">
-     <form onsubmit="return false">
-        <input id="text-bar" type="text" class="text-bar btn" id="new-message" placeholder="secret">
-        <button id="submit-button" type="submit" class="submit-button btn" style="vertical-align: middle">Send</button>
+    <form id="form" onsubmit="return false">
+      <input id="text-bar" type="text" class="text-bar btn" id="new-message" placeholder="secret" autocomplete="off">
+      <button id="submit-button" type="submit" class="submit-button btn" style="vertical-align: middle" onclick="sendMessage()">Send</button>
     </form>
+
   </footer>
 
 </div>

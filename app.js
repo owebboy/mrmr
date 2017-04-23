@@ -12,9 +12,11 @@ var express = require( 'express' ),
   animalList = [ 't-rex', 'sloth', 'llama', 'dog', 'cat', 'waterbottle', 'shovel', 'door', 'shirt', 'potato' ],
   colorList = [ 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white', 'grey', 'black' ],
   user = {},
+  serv = {},
   i,
   ret,
-  room = {};
+  room = {},
+  message;
 
 // Integrate socket.io
 app.io = require( 'socket.io' )();
@@ -64,12 +66,6 @@ function listUsers() {
   }
 }
 
-
-
-
-
-
-
 room = {
   id: '',
   name: '',
@@ -91,7 +87,13 @@ app.io.on( 'connection', function onconnect( socket ) {
     roomId: '',
     ownsRoom: false };
 
-  console.log( 'A user connected!' );
+  serv = {
+    id: '-1',
+    name: 'SERVER',
+    message: '',
+    uiPref: '-1',
+    roomId: '',
+    ownsRoom: false };
 
   //set the user id and then the sockets id to that
   user.id = uuid();
@@ -100,6 +102,8 @@ app.io.on( 'connection', function onconnect( socket ) {
   user.name = colorList[ Math.floor( Math.random() * 10 ) ] + '_' + animalList[ Math.floor( Math.random() * 10 ) ];
   roomList [ 0 ].users.push( user.name );
 
+  socket.join( user.roomId );
+
   console.log( 'A user connected with the id: ' + user.id +
                '\n                        name: ' + user.name +
                '\n                     room id: ' + user.roomId );
@@ -107,6 +111,9 @@ app.io.on( 'connection', function onconnect( socket ) {
   userList.push( user );
 
   listUsers();
+
+  serv.message = user.name + ' has joined the room!';
+  socket.broadcast.to( user.roomId ).emit( 'room-to-clients', serv );
 
   socket.on( 'request-user', function ru() {
     for ( i = 0; i < userList.length; i++ ) {
@@ -132,9 +139,12 @@ app.io.on( 'connection', function onconnect( socket ) {
         for ( j = 0; j < roomList.length; j++ ) {
           for ( k = 0; k < roomList [ j ].users.length; k++ ) {
             if ( userList [ i ].name === roomList [ j ].users[ k ]) {
-              console.log( 'disconnected user' );
+              serv.message = userList [ i ].name + ' has left the server.';
+              app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', user );
+
               roomList[ j ].users.splice( k, 1 );
               userList.splice( i, 1 );
+
               app.io.emit( 'send-rooms', roomList );
               return;
             }
