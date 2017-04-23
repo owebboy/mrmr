@@ -47,6 +47,8 @@ Temporary Items
 .apdisk
 
 # Things that just don't need to be commited from the project
+public/stylesheets/style.css
+public/stylesheets/style.css.map
 node_modules
 stderr.txt
 stdout.txt

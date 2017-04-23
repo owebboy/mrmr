@@ -79,6 +79,8 @@ app.io.on( 'connection', function onconnect( socket ) {
                '\n                     room id: ' + user.roomId );
 
   userList.push( user );
+
+  
 });
 
 module.exports = app;
