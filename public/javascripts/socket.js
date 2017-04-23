@@ -13,7 +13,6 @@ socket.on( 'room-to-clients', function roomtoclients( res ) {
 
 socket.on( 'send-user', function receiveUser( res ) {
   user = res;
-  console.log( user );
   document.getElementById( 'text-bar' ).placeholder = res.name;
   $( '#ddOwner' ).hide();
   if ( user.ownsRoom == true ) {
@@ -22,8 +21,6 @@ socket.on( 'send-user', function receiveUser( res ) {
 });
 
 socket.on( 'send-rooms', function receiveRooms( res ) {
-
-  console.log( res );
 
   $( '#accordion' ).empty();
   for ( i = 0; i < res.length; i++ ) {
@@ -84,3 +81,11 @@ socket.on( 'send-rooms', function receiveRooms( res ) {
     }
   }
 });
+
+
+/*
+function makeRoom() {
+  socket.emit( 'make-room', user );
+  changeRoom( user.name + '\'s Room' );
+}
+*/

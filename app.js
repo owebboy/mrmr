@@ -62,7 +62,9 @@ app.use( function errorhandler( err, req, res, next ) {
 
 function listUsers() {
   for ( i = 0; i < userList.length; i++ ) {
-    console.log( userList[ i ].name );
+    console.log( 'A user connected with the id: ' + userList[ i ].id +
+               '\n                        name: ' + userList[ i ].name +
+               '\n                     room id: ' + userList[ i ].roomId );
   }
 }
 
@@ -85,10 +87,6 @@ room = {
 room.id = ( uuid());
 room.name = 'Random';
 roomList.push( room );
-
-console.log( roomList[0].name );
-console.log( roomList[1].name );
-//push the default room
 
 app.io.on( 'connection', function onconnect( socket ) {
 
@@ -117,17 +115,13 @@ app.io.on( 'connection', function onconnect( socket ) {
 
   socket.join( user.roomId );
 
-  console.log( 'A user connected with the id: ' + user.id +
-               '\n                        name: ' + user.name +
-               '\n                     room id: ' + user.roomId );
-
   userList.push( user );
-
-  listUsers();
 
   serv.message = user.name + ' has joined the room!';
   console.log( '####room-to-clients####' );
   socket.broadcast.to( user.roomId ).emit( 'room-to-clients', serv );
+
+  listUsers();
 
   socket.on( 'request-user', function ru() {
     console.log( '####request-user####' );
@@ -170,7 +164,78 @@ app.io.on( 'connection', function onconnect( socket ) {
     app.io.emit( 'send-rooms', roomList );
   });
 
+  socket.on( 'change-room', function cr( user, roomName ) {
+    //remove user from current room
+    //get id for new room
+    //set users id for new room
+    //send user back
+    //send rooms list back
+
+    user.ownsRoom = false;
+
+
+    console.log( user.name );
+    console.log( roomName );
+
+    for ( i = 0; i < userList.length; i++ ) {
+      if ( userList [ i ].id === socket.uid ) {
+        for ( j = 0; j < roomList.length; j++ ) {
+          for ( k = 0; k < roomList [ j ].users.length; k++ ) {
+            if ( userList [ i ].name === roomList [ j ].users[ k ]) {
+
+              if ( roomName == roomList [ j ].name ) {
+                return;
+              }
+
+              socket.leave( user.roomId );
+              serv.message = userList [ i ].name + ' has left the room.';
+              app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', serv );
+              roomList[ j ].users.splice( k, 1 );
+            }
+          }
+        }
+      }
+    }
+
+    for ( i = 0; i < userList.length; i++ ) {
+      if ( userList[ i ].id == socket.uid ) {
+        for ( j = 0; j < roomList.length; j++ ) {
+          if ( roomList [ j ].name === roomName ) {
+            userList [ i ].roomId = roomList [ j ].id;
+            roomList [ j ].users.push( userList [ i ].name );
+            user = userList [ i ];
+            socket.join( user.roomId );
+            ret = userList [ i ];
+          }
+        }
+      }
+    }
+
+    listUsers();
+
+    socket.join( user.roomId );
+
+    socket.emit( 'send-user', ret );
+    app.io.emit( 'send-rooms', roomList );
+
+  });
+
+/*
+  socket.on( 'make-room', function mr( user ) {
+    room = {
+      id: uuid(),
+      name: user.name + '\'s Room',
+      users: []
+    }
+    user.ownsRoom = true;
+
+    roomList.push( room );
+    return user;
+  })
+*/
+
   socket.on( 'disconnect', function disc() {
+    user.ownsRoom = false;
     console.log( '####disconnect####' );
     for ( i = 0; i < userList.length; i++ ) {
       if ( userList [ i ].id === socket.uid ) {

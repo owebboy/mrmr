@@ -42,5 +42,7 @@ function updateUsername() {
 }
 
 function changeRoom( roomName ) {
-  console.log( ' works' );
+  console.log( user );
+  console.log( roomName );
+  socket.emit( 'change-room', user, roomName );
 }
