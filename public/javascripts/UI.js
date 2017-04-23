@@ -10,10 +10,10 @@ function sendMessage() {
 }
 
 function changeName() {
-  var title = 'Change Your Name';
-  var header = 'What else are we gonna call you?';
-  var button = 'Change it!';
-  var func = updateUsername;
+  var title = 'Change Your Name',
+    header = 'What else are we gonna call you?',
+    button = 'Change it!',
+    func = updateUsername;
 
   displayPopup( title, header, button, func );
 }
@@ -40,3 +40,4 @@ function updateUsername() {
   socket.emit( 'update-username', user );
   closePopup();
 }
+

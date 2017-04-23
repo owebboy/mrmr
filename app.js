@@ -75,6 +75,19 @@ room = {
 room.id = ( uuid());
 room.name = 'Lobby';
 roomList.push( room );
+
+room = {
+  id: '',
+  name: '',
+  users: []
+}
+
+room.id = ( uuid());
+room.name = 'Random';
+roomList.push( room );
+
+console.log( roomList[0].name );
+console.log( roomList[1].name );
 //push the default room
 
 app.io.on( 'connection', function onconnect( socket ) {

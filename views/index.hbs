@@ -18,10 +18,17 @@
       </div>
     </div>
 
+    <div class="roomowner dflex">
+      <button class="btn btn-secondary" type="button" id="buttonOwner">
+        Make a Room!
+      </button>
+    </div>
+
     <div class="dflex dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="ddMember" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-cogs" aria-hidden="true"></i> Settings
       </button>
+
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" onclick="changeName()">Change Your Name</a>
         <a class="dropdown-item disabled">Color Scheme</a>
@@ -36,8 +43,7 @@
   </article>
 
   <aside class="sidebar" id="sidebar">
-    <ul id="room-insert">
-    </ul>
+    <div id="accordion" role="tablist" aria-multiselectable="true"></div>
   </aside>
 
   <footer class="input">

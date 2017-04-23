@@ -57,11 +57,11 @@ body {
   height: 85%;
   word-wrap: break-word;
   li {
-    color: white;
+    color: black;
     padding-left: 1.8em;
   }
   p {
-    color: white;
+    color: black;
   }
 }
 
@@ -112,7 +112,7 @@ body {
 
 .dflex {
   position: absolute;
-  right: 5%;
+  right: 3%;
   top: 1.5vh;
   align-items: center;
   display: flex;
@@ -120,7 +120,7 @@ body {
 }
 
 .roomowner {
-  right: 20%;
+  right: 11%;
 }
 
 .posit {

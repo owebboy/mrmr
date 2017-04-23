@@ -43,12 +43,13 @@ body {
   -webkit-align-self: stretch;
   align-self: stretch;
   order: 2;
-  height: 85%; }
+  height: 85%;
+  word-wrap: break-word; }
   .sidebar li {
-    color: white;
+    color: black;
     padding-left: 1.8em; }
   .sidebar p {
-    color: white; }
+    color: black; }
 
 .chat {
   background-color: transparent;
@@ -91,14 +92,14 @@ body {
 
 .dflex {
   position: absolute;
-  right: 5%;
+  right: 3%;
   top: 1.5vh;
   align-items: center;
   display: flex;
   justify-content: center; }
 
 .roomowner {
-  right: 20%; }
+  right: 11%; }
 
 .posit {
   display: none;
