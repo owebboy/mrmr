@@ -182,6 +182,7 @@ app.io.on( 'connection', function onconnect( socket ) {
       if ( userList [ i ].id === socket.uid ) {
         //start searching for the same id in the rooms
         for ( j = 0; j < roomList.length; j++ ) {
+          console.log( j );
           for ( k = 0; k < roomList [ j ].users.length; k++ ) {
             //if the users (in the room) id is the same as the sockets uid
             if ( roomList [ j ].users[ k ].id === socket.uid ) {
@@ -195,7 +196,15 @@ app.io.on( 'connection', function onconnect( socket ) {
               serv.message = userList [ i ].name + ' has left the room.';
               app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', serv );
               //remove user from list of users for room
-              roomList[ j ].users.splice( k, 1 );
+              roomList [ j ].users.splice( k, 1 );
+              if ( roomList [ j ].users.length === 0 ) {
+                if ( roomList [ j ].name !== 'Lobby' ) {
+                  if ( roomList [ j ].name !== 'Random' ) {
+                    roomList.splice( j, 1 );
+                    j--;
+                  }
+                }
+              }
             }
           }
         }
@@ -211,6 +220,7 @@ app.io.on( 'connection', function onconnect( socket ) {
           if ( roomList [ j ].name === new_roomName ) {
             //set the users roomID to the rooms id
             userList [ i ].roomId = roomList [ j ].id;
+            userList [ i ].ownsRoom = false;
             //push the user into the list of rooms
             roomList [ j ].users.push( userList [ i ]);
             socket.join( userList [ i ].roomId );
