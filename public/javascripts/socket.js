@@ -50,7 +50,7 @@ socket.on( 'send-rooms', function receiveRooms( res ) {
   $( '#accordion' ).append( div );
 
   for ( j = 0; j < res [ 0 ].users.length; j++ ) {
-    $( '#' + res [ 0 ].name + 'List' ).append( $( '<p>' ).text( res [ 0 ].users[ j ]));
+    $( '#' + res [ 0 ].name + 'List' ).append( $( '<p>' ).text( res [ 0 ].users[ j ].name ));
   }
 
   for ( i = 1; i < res.length; i++ ) {
@@ -77,15 +77,11 @@ socket.on( 'send-rooms', function receiveRooms( res ) {
     $( '#accordion' ).append( div );
 
     for ( j = 0; j < res [ i ].users.length; j++ ) {
-      $( '#' + res [ i ].name + 'List' ).append( $( '<p>' ).text( res [ i ].users[ j ]));
+      $( '#' + res [ i ].name + 'List' ).append( $( '<p>' ).text( res [ i ].users[ j ].name ));
     }
   }
 });
 
-
-/*
 function makeRoom() {
   socket.emit( 'make-room', user );
-  changeRoom( user.name + '\'s Room' );
 }
-*/

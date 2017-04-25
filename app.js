@@ -88,40 +88,35 @@ room.id = ( uuid());
 room.name = 'Random';
 roomList.push( room );
 
+serv = {
+  id: '-1',
+  name: 'SERVER',
+  message: '',
+  uiPref: '-1',
+  roomId: '',
+  ownsRoom: false };
+
 app.io.on( 'connection', function onconnect( socket ) {
 
   user = {
-    id: '',
+    id: uuid(),
     name: '',
     message: '',
     uiPref: 'default',
-    roomId: '',
+    roomId: roomList [ 0 ].id,
     ownsRoom: false };
 
-  serv = {
-    id: '-1',
-    name: 'SERVER',
-    message: '',
-    uiPref: '-1',
-    roomId: '',
-    ownsRoom: false };
-
-  //set the user id and then the sockets id to that
-  user.id = uuid();
   socket.uid = user.id;
-  user.roomId = roomList [ 0 ].id;
+
   user.name = colorList[ Math.floor( Math.random() * 10 ) ] + '_' + animalList[ Math.floor( Math.random() * 10 ) ];
-  roomList [ 0 ].users.push( user.name );
-
-  socket.join( user.roomId );
-
   userList.push( user );
 
-  serv.message = user.name + ' has joined the room!';
+  roomList [ 0 ].users.push( user );
+  socket.join( user.roomId );
+
+  serv.message = user.name + ' has joined the server!';
   console.log( '####room-to-clients####' );
   socket.broadcast.to( user.roomId ).emit( 'room-to-clients', serv );
-
-  listUsers();
 
   socket.on( 'request-user', function ru() {
     console.log( '####request-user####' );
@@ -136,6 +131,7 @@ app.io.on( 'connection', function onconnect( socket ) {
 
   socket.on( 'request-rooms', function rr() {
     console.log( '####request-rooms####' );
+    // sends roomList with list of rooms each containing id, name, list of user objs
     app.io.emit( 'send-rooms', roomList );
   });
 
@@ -144,17 +140,21 @@ app.io.on( 'connection', function onconnect( socket ) {
     app.io.to( user.roomId ).emit( 'room-to-clients', user );
   });
 
-  socket.on( 'update-username', function uu( user ) {
+  socket.on( 'update-username', function uu( new_user ) {
     console.log( '####update-username####' );
     for ( i = 0; i < userList.length; i++ ) {
-      if ( user.id === userList [ i ].id ) {
+      //find the user in the list of users
+      if ( socket.uid === userList [ i ].id ) {
+        //find the user in the rooms
         for ( j = 0; j < roomList.length; j++ ) {
           for ( k = 0; k < roomList [ j ].users.length; k++ ) {
-            if ( userList [ i ].name === roomList [ j ].users[ k ]) {
-              serv.message = userList [ i ].name + ' changed their name to ' + user.name;
+            //find the user by their id in the rooms
+            if ( userList [ i ].id === roomList [ j ].users[ k ].id ) {
+              serv.message = userList [ i ].name + ' changed their name to ' + new_user.name;
               socket.broadcast.to( user.roomId ).emit( 'room-to-clients', serv );
-              roomList [ j ].users [ k ] = user.name;
-              userList [ i ] = user;
+
+              roomList [ j ].users [ k ] = new_user;
+              userList [ i ] = new_user;
             }
           }
         }
@@ -164,7 +164,7 @@ app.io.on( 'connection', function onconnect( socket ) {
     app.io.emit( 'send-rooms', roomList );
   });
 
-  socket.on( 'change-room', function cr( user, roomName ) {
+  socket.on( 'change-room', function cr( user, new_roomName ) {
     //remove user from current room
     //get id for new room
     //set users id for new room
@@ -173,20 +173,71 @@ app.io.on( 'connection', function onconnect( socket ) {
 
     user.ownsRoom = false;
 
-
     console.log( user.name );
-    console.log( roomName );
+    console.log( new_roomName );
 
+    //find the user by id
+    for ( i = 0; i < userList.length; i++ ) {
+      // if the current user id == the sockets uid
+      if ( userList [ i ].id === socket.uid ) {
+        //start searching for the same id in the rooms
+        for ( j = 0; j < roomList.length; j++ ) {
+          for ( k = 0; k < roomList [ j ].users.length; k++ ) {
+            //if the users (in the room) id is the same as the sockets uid
+            if ( roomList [ j ].users[ k ].id === socket.uid ) {
+              //if the new_roomName is the same as the current room don't change rooms
+              if ( new_roomName == roomList [ j ].name ) {
+                return;
+              }
+
+              //have socket leave room
+              socket.leave( user.roomId );
+              serv.message = userList [ i ].name + ' has left the room.';
+              app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', serv );
+              //remove user from list of users for room
+              roomList[ j ].users.splice( k, 1 );
+            }
+          }
+        }
+      }
+    }
+
+
+    //find the user in the user list
+    for ( i = 0; i < userList.length; i++ ) {
+      if ( userList[ i ].id === socket.uid ) {
+        //find the room the user should now go into
+        for ( j = 0; j < roomList.length; j++ ) {
+          if ( roomList [ j ].name === new_roomName ) {
+            //set the users roomID to the rooms id
+            userList [ i ].roomId = roomList [ j ].id;
+            //push the user into the list of rooms
+            roomList [ j ].users.push( userList [ i ]);
+            socket.join( userList [ i ].roomId );
+            ret = userList [ i ];
+          }
+        }
+      }
+    }
+    
+    serv.message = ret.name + ' has joined the room!';
+    socket.broadcast.to( ret.roomId ).emit( 'room-to-clients', serv );
+    listUsers();
+    socket.emit( 'send-user', ret );
+    app.io.emit( 'send-rooms', roomList );
+  });
+
+  socket.on( 'make-room', function mr( user ) {
+    if ( user.ownsRoom === true ) {
+      return;
+    }
+
+    //removes user from all possible rooms if in multiple rooms (which they shouldn't be)
     for ( i = 0; i < userList.length; i++ ) {
       if ( userList [ i ].id === socket.uid ) {
         for ( j = 0; j < roomList.length; j++ ) {
           for ( k = 0; k < roomList [ j ].users.length; k++ ) {
-            if ( userList [ i ].name === roomList [ j ].users[ k ]) {
-
-              if ( roomName == roomList [ j ].name ) {
-                return;
-              }
-
+            if ( userList [ i ].id === roomList [ j ].users[ k ].id ) {
               socket.leave( user.roomId );
               serv.message = userList [ i ].name + ' has left the room.';
               app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', serv );
@@ -197,42 +248,29 @@ app.io.on( 'connection', function onconnect( socket ) {
       }
     }
 
+    room = {
+      id: uuid(),
+      name: user.name + 's-Room',
+      users: []
+    }
+
+    user.ownsRoom = true;
+    user.roomId = room.id;
+
+    room.users.push( user );
+    roomList.push( room );
+
     for ( i = 0; i < userList.length; i++ ) {
-      if ( userList[ i ].id == socket.uid ) {
-        for ( j = 0; j < roomList.length; j++ ) {
-          if ( roomList [ j ].name === roomName ) {
-            userList [ i ].roomId = roomList [ j ].id;
-            roomList [ j ].users.push( userList [ i ].name );
-            user = userList [ i ];
-            socket.join( user.roomId );
-            ret = userList [ i ];
-          }
-        }
+      if ( user.id === userList [ i ].id ) {
+        userList [ i ] = user;
       }
     }
 
-    listUsers();
-
     socket.join( user.roomId );
 
-    socket.emit( 'send-user', ret );
+    socket.emit( 'send-user', user );
     app.io.emit( 'send-rooms', roomList );
-
   });
-
-/*
-  socket.on( 'make-room', function mr( user ) {
-    room = {
-      id: uuid(),
-      name: user.name + '\'s Room',
-      users: []
-    }
-    user.ownsRoom = true;
-
-    roomList.push( room );
-    return user;
-  })
-*/
 
   socket.on( 'disconnect', function disc() {
     user.ownsRoom = false;
@@ -241,7 +279,7 @@ app.io.on( 'connection', function onconnect( socket ) {
       if ( userList [ i ].id === socket.uid ) {
         for ( j = 0; j < roomList.length; j++ ) {
           for ( k = 0; k < roomList [ j ].users.length; k++ ) {
-            if ( userList [ i ].name === roomList [ j ].users[ k ]) {
+            if ( userList [ i ].id === roomList [ j ].users[ k ].id ) {
               serv.message = userList [ i ].name + ' has left the server.';
               app.io.to( userList [ i ].roomId ).emit( 'room-to-clients', serv );
 
