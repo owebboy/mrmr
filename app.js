@@ -7,6 +7,7 @@ var express = require( 'express' ),
   index = require( './routes/index' ),
   uuid = require( 'uuid' ),
   sassMiddleware = require( 'node-sass-middleware' ),
+  grawlix = require( 'grawlix' ),
   app = express(),
   animalList = [ 't-rex', 'sloth', 'llama', 'dog', 'cat', 'waterbottle', 'shovel', 'door', 'shirt', 'potato' ],
   colorList = [ 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white', 'grey', 'black' ],
@@ -21,6 +22,12 @@ var express = require( 'express' ),
 
 //Integrate socket.io
 app.io = require( 'socket.io' )();
+
+//start grawlix
+grawlix.setDefaults({
+  style: 'ascii',
+  randomize: true
+});
 
 //view engine setup
 app.set( 'views', path.join( __dirname, 'views' ));
@@ -254,6 +261,7 @@ app.io.on( 'connection', function connection( socket ) {
    */
   socket.on( 'client-to-room', function client_to_room( u_user ) {
     console.log( '####client-to-room####' );
+    u_user.message = grawlix( u_user.message );
     socket.user = u_user;
     app.io.in( socket.user.roomID ).emit( 'room-to-clients', socket.user );
   });
@@ -271,6 +279,7 @@ app.io.on( 'connection', function connection( socket ) {
     if ( u_user.name === socket.user.name ) {
       return;
     }
+    u_user.name = grawlix( u_user.name );
     //tell the server the user updated their name
     serv.message = socket.user.name + ' changed their name to ' + u_user.name;
     socket.in( socket.user.roomID ).emit( 'room-to-clients', serv );
@@ -327,6 +336,7 @@ app.io.on( 'connection', function connection( socket ) {
    */
   socket.on( 'make-room', function make_room( room_name ) {
     console.log( '####make-room#### ' );
+    room_name = grawlix( room_name );
     temp = new room( room_name );
     temp.roomOwner = socket.user.ID;
     socket.leave( socket.user.roomID );
@@ -354,6 +364,7 @@ app.io.on( 'connection', function connection( socket ) {
    */
   socket.on( 'update-room', function rename_room( new_roomname ) {
     console.log( '####update-room#### ' );
+    new_roomname = grawlix( new_roomname );
     for ( let i = 0; i < roomList.length; i++ ) {
       console.log( roomList [ i ].roomOwner );
       console.log( socket.id );
