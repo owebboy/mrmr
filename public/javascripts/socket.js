@@ -1,94 +1,119 @@
 var socket = io(),
-  user,
-  i,
-  div,
-  div2,
-  h5,
-  a,
-  join,
-  div3,
-  div4,
-  ul;
+  user;
 
-socket.emit( 'request-user', null );
-socket.emit( 'request-rooms', null );
+socket.emit( 'request-user' );
 
-socket.on( 'room-to-clients', function roomtoclients( res ) {
-  $( '#chat-insert' ).append( $( '<li>' ).text( res.name + ': ' + res.message ));
+socket.on( 'send-user', function send_user( u_user ) {
+  user = u_user;
+  if ( user.ownsRoom === 'false' ) {
+    console.log( '!owns room' );
+    $( '.room-settings-button' ).each( function toggle1() {
+      $( this ).css( 'display', 'none' )
+    });
+    $( '.make-room' ).each( function toggle2() {
+      $( this ).css( 'display', 'inline-block' );
+    });
+  }
+  if ( user.ownsRoom !== 'false' ) {
+    console.log( 'owns room' );
+    $( '.room-settings-button' ).each( function toggle3() {
+      $( this ).css( 'display', 'inline-block' )
+    });
+    $( '.make-room' ).each( function toggle4() {
+      $( this ).css( 'display', 'none' );
+    });
+  }
+  document.getElementById( 'message' ).placeholder = user.name;
 });
 
-socket.on( 'send-user', function receiveUser( res ) {
-  user = res;
-  console.log( res.name );
-  document.getElementById( 'text-bar' ).placeholder = res.name;
-  $( '#ddOwner' ).hide();
-  if ( user.ownsRoom == true ) {
-    $( '#ddOwner' ).show();
-  }
+socket.on( 'send-rooms', function send_rooms( roomList ) {
+  console.log( roomList );
+  updateRoomitems( roomList );
 });
 
-socket.on( 'send-rooms', function receiveRooms( res ) {
-
-  $( '#accordion' ).empty();
-  for ( i = 0; i < res.length; i++ ) {
-    $( '#' + res [ i ].name + 'List' ).empty();
-  }
-
-  div = $( '<div>', { 'class': 'card' });
-  div2 = $( '<div>', { 'class': 'card-header', 'role': 'tab', 'id': 'H' + res [ 0 ].name });
-  h5 = $( '<h5>', { 'class': 'mb-0' });
-  a = $( '<a>', { 'data-toggle': 'collapse', 'data-parent': '#accordion', 'href': '#C' + res [ 0 ].name, 'aria-expanded': 'true', 'aria-controls': 'C' + res [ 0 ].name }).text( res [ 0 ].name );
-  join = $( '<button>', { 'class': 'btn side-btn', 'onclick': 'changeRoom( "' + res [ 0 ].name + '" )' }).text( 'Join' );
-
-  h5 = h5.append( a );
-  div2 = div2.append( h5 );
-  div2 = div2.append( join );
-
-  div3 = $( '<div>', { 'id': 'C' + res [ 0 ].name, 'class': 'collapse show', 'role': 'tabpanel', 'aria-labelledby': 'H' + res [ 0 ].name });
-  div4 = $( '<div>', { 'class': 'card-block' });
-  ul = $( '<ul>', { 'id': res [ 0 ].name + 'List' });
-
-  div4 = div4.append( ul );
-  div3 = div3.append( div4 );
-
-  div = div.append( div2 );
-  div = div.append( div3 );
-
-  $( '#accordion' ).append( div );
-
-  for ( j = 0; j < res [ 0 ].users.length; j++ ) {
-    $( '#' + res [ 0 ].name + 'List' ).append( $( '<p>' ).text( res [ 0 ].users[ j ].name ));
-  }
-
-  for ( i = 1; i < res.length; i++ ) {
-    div = $( '<div>', { 'class': 'card' });
-    div2 = $( '<div>', { 'class': 'card-header', 'role': 'tab', 'id': 'H' + res [ i ].name });
-    h5 = $( '<h5>', { 'class': 'mb-0' });
-    a = $( '<a>', { 'class': 'collapsed', 'data-toggle': 'collapse', 'data-parent': '#accordion', 'href': '#C' + res [ i ].name, 'aria-expanded': 'false', 'aria-controls': 'C' + res [ i ].name }).text( res [ i ].name );
-    join = $( '<button>', { 'class': 'btn side-btn', 'onclick': 'changeRoom( "' + res [ i ].name + '" )' }).text( 'Join' );
-
-    h5 = h5.append( a );
-    div2 = div2.append( h5 );
-    div2 = div2.append( join );
-
-    div3 = $( '<div>', { 'id': 'C' + res [ i ].name, 'class': 'collapse show', 'role': 'tabpanel', 'aria-labelledby': 'H' + res [ i ].name });
-    div4 = $( '<div>', { 'class': 'card-block' });
-    ul = $( '<ul>', { 'id': res [ i ].name + 'List' });
-
-    div4 = div4.append( ul );
-    div3 = div3.append( div4 );
-
-    div = div.append( div2 );
-    div = div.append( div3 );
-
-    $( '#accordion' ).append( div );
-
-    for ( j = 0; j < res [ i ].users.length; j++ ) {
-      $( '#' + res [ i ].name + 'List' ).append( $( '<p>' ).text( res [ i ].users[ j ].name ));
-    }
-  }
+socket.on( 'room-to-clients', function room_to_clients( user ) {
+  $( '#chat-insert' ).append( '<li><strong>' + user.name + ': ' + user.message + '</strong></li>' );
+  $( '#chat-insert' ).animate({ scrollTop: $( '#chat-insert' ).get( 0 ).scrollHeight }, 2000 );
 });
+
+function changeRoom( roomID ) {
+  user.roomID = roomID;
+  socket.emit( 'change-room', user );
+  roomoverlayClose();
+}
+
+function sendMessage() {
+  let message = document.getElementById( 'message' ).value;
+  document.getElementById( 'input' ).reset();
+  if ( message === '' ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not send an empty message</strong></li>' );
+    return;
+  }
+  if ( message.length > 250 ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Messages must be 250 characters or less</strong></li>' );
+    return;
+  }
+  user.message = message;
+  console.log( user.message );
+  socket.emit( 'client-to-room', user );
+}
+
+function changeName() {
+  let name = document.getElementById( 'name-input' ).value;
+  document.getElementById( 'name-form' ).reset();
+  if ( name === '' ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty name</strong></li>' );
+    closepopup();
+    return;
+  } else if ( name.length > 20 ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Names must be 20 characters or less</strong></li>' );
+    closepopup();
+    return;
+  } else if ( user.name === name ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You have to actually change your name</strong></li>' );
+    closepopup();
+    return;
+  } else {
+    user.name = name;
+    socket.emit( 'update-username', user );
+    closepopup();
+  }
+}
 
 function makeRoom() {
-  socket.emit( 'make-room', user );
+  let name = document.getElementById( 'name-input' ).value;
+  document.getElementById( 'name-form' ).reset();
+  if ( name === '' ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty room name</strong></li>' );
+    closepopup();
+    return;
+  } else if ( name.length > 12 ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Room names must be 12 characters or less</strong></li>' );
+    closepopup();
+    return;
+  } else {
+    socket.emit( 'make-room', name );
+    closepopup();
+  }
+}
+
+function changeroomName() {
+  let name = document.getElementById( 'name-input' ).value;
+  document.getElementById( 'name-form' ).reset();
+  if ( name === '' ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty name</strong></li>' );
+    closepopup();
+    return;
+  } else if ( name.length > 12 ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Names must be 12 characters or less</strong></li>' );
+    closepopup();
+    return;
+  } else if ( user.name === name ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You have to actually change your room\'s name</strong></li>' );
+    closepopup();
+    return;
+  } else {
+    socket.emit( 'update-room', name );
+    closepopup();
+  }
 }
