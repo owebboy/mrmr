@@ -46,11 +46,11 @@ function sendMessage() {
   let message = document.getElementById( 'message' ).value;
   document.getElementById( 'input' ).reset();
   if ( message === '' ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not send an empty message</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not send an empty message.</strong></li>' );
     return;
   }
   if ( message.length > 250 ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: Messages must be 250 characters or less</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Messages must be 250 characters or less.</strong></li>' );
     return;
   }
   user.message = message;
@@ -62,15 +62,15 @@ function changeName() {
   let name = document.getElementById( 'name-input' ).value;
   document.getElementById( 'name-form' ).reset();
   if ( name === '' ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty name</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty name.</strong></li>' );
     closepopup();
     return;
   } else if ( name.length > 20 ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: Names must be 20 characters or less</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Names must be 20 characters or less.</strong></li>' );
     closepopup();
     return;
   } else if ( user.name === name ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: You have to actually change your name</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You have to actually change your name.</strong></li>' );
     closepopup();
     return;
   } else {
@@ -84,11 +84,15 @@ function makeRoom() {
   let name = document.getElementById( 'name-input' ).value;
   document.getElementById( 'name-form' ).reset();
   if ( name === '' ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty room name</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty room name.</strong></li>' );
     closepopup();
     return;
   } else if ( name.length > 12 ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: Room names must be 12 characters or less</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Room names must be 12 characters or less.</strong></li>' );
+    closepopup();
+    return;
+  } else if ( name === 'Lobby' || name === 'Random' ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not set your room name to the same name as the default rooms.</strong></li>' );
     closepopup();
     return;
   } else {
@@ -101,19 +105,18 @@ function changeroomName() {
   let name = document.getElementById( 'name-input' ).value;
   document.getElementById( 'name-form' ).reset();
   if ( name === '' ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty name</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not have an empty name.</strong></li>' );
     closepopup();
     return;
   } else if ( name.length > 12 ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: Names must be 12 characters or less</strong></li>' );
+    $( '#chat-insert' ).append( '<li><strong>SERVER: Names must be 12 characters or less.</strong></li>' );
     closepopup();
     return;
-  } else if ( user.name === name ) {
-    $( '#chat-insert' ).append( '<li><strong>SERVER: You have to actually change your room\'s name</strong></li>' );
+  } else if ( name === 'Lobby' || name === 'Random' ) {
+    $( '#chat-insert' ).append( '<li><strong>SERVER: You can not set your room name to the same name as the default rooms.</strong></li>' );
     closepopup();
     return;
-  } else {
-    socket.emit( 'update-room', name );
-    closepopup();
   }
+  socket.emit( 'update-room', name );
+  closepopup();
 }
